@@ -1,0 +1,3 @@
+{
+    "files": ["HandleData.py","main.py","mainWindow.qml","form.ui","Data.py","NMEA.txt","Control.py","pyproject.toml"]
+}
