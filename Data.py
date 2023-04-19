@@ -41,3 +41,7 @@ class Data:
 
         pass
 
+    def nulData(self):
+
+        return 0
+

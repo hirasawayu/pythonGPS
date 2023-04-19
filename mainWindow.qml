@@ -1,9 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 
-
 Window {
-    title: "pythonGPS"
+//Item {
     id: rectangle
     width: 900
     height: 600

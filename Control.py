@@ -4,33 +4,32 @@ import HandleData
 
 class Control:
 
-
-    extractedData = ""
-    lineCount = 0
-
     def __init__(self):
         pass
 
     def startControl(self):
         handleData = HandleData.HandleData()
 
-        extractedData, lineCount = handleData.extractData()
-        extractedDataList = extractedData.split('\n')
+        linePointer = 0
+        while True:
+            extractedData, linePointer, loopFlag = handleData.extractData(linePointer)
+            if loopFlag == False:
+                break
+            extractedDataList = extractedData.split('\n')
 
-
-        for i in range(lineCount):
-            GGAInfo = handleData.analyzeLineInfo(extractedDataList[i])
-
-            self.debugPrint(GGAInfo)
-
-
-
+            print("THRO")
 
 
 
+            i = 0
+            print("NUM        ",  len(extractedDataList))
+            for i in range(len(extractedDataList)):
+                print(extractedDataList[i])
+                GGAInfo = handleData.analyzeLineInfo(extractedDataList[i])
 
 
-
+                if not GGAInfo == 0:
+                    self.debugPrint(GGAInfo)
 
         return
 

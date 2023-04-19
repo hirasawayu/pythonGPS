@@ -9,29 +9,41 @@ class HandleData:
 
         pass
 
-    def extractData(self):
+    def extractData(self, linePointer):
 
         file = open('NMEA.txt', 'r')
         extractedData = ""
         lineCount = 0
 
+
+        for i in range(linePointer):
+            file.readline()
+
         while True:
             line = file.readline()
-            if "$GPGGA" in line:
-                extractedData += line
-                lineCount += 1
 
-            if not line:
+            if line == "\n":
+                linePointer += 1
+                loopFlag = True
                 break
+
+            elif not line:
+                loopFlag = False
+
+            linePointer += 1
+
+            extractedData += line
 
         file.close()
 
-        return extractedData, lineCount
+        return extractedData, linePointer, loopFlag
 
 
     def analyzeLineInfo(self, line):
 
-        componentList = line.split(',')
+
+        if "$GPGGA" in line:
+            componentList = line.split(',')
 
         #componentList
         #[1]:time
@@ -44,20 +56,23 @@ class HandleData:
         #[9]:altitude
         #[10]:geoidHeight
 
-        time = componentList[1][:2] + ":" + componentList[1][2:4] + ":" + componentList[1][4:]
+            time = componentList[1][:2] + ":" + componentList[1][2:4] + ":" + componentList[1][4:]
 
-        lat_degree, lon_degree = self.degminToDegree(componentList[2], componentList[4])
+            lat_degree, lon_degree = self.degminToDegree(componentList[2], componentList[4])
 
-        coordX, coordY = self.latlonToXY(lat_degree, componentList[3], lon_degree, componentList[5])
+            coordX, coordY = self.latlonToXY(lat_degree, componentList[3], lon_degree, componentList[5])
 
-        #self.checkSum()
+            #self.checkSum()
 
-        #Timer
-        sleep(1)
+            #Timer
+            sleep(1)
 
-        GGAinfo = Data.Data(time, componentList[2], componentList[3], componentList[4], componentList[5], componentList[6], componentList[7], componentList[9], componentList[11], coordX, coordY)
+            GGAInfo = Data.Data(time, componentList[2], componentList[3], componentList[4], componentList[5], componentList[6], componentList[7], componentList[9], componentList[11], coordX, coordY)
 
-        return GGAinfo
+        else:
+            GGAInfo = 0
+
+        return GGAInfo
 
 
 
