@@ -7,7 +7,6 @@ import sys
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtQuick import  QQuickWindow
-from PySide6.QtCore import QTimer
 
 
 
@@ -28,14 +27,7 @@ def main():
     window = engine.rootObjects()[0]
     window.show()
 
-    control = Control.Control()
-
-    timer = QTimer()
-    timer.setInterval(1000)
-    timer.timeout.connect(control.startControl)
-    timer.start()
-
-
+    control = Control.Control(window)
 
     sys.exit(app.exec())
 

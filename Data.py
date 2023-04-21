@@ -3,16 +3,11 @@
 
 class Data:
 
+    """
     #GGA
     time = ""
     latitude = ""
-    #0 = North; 1 = South
-    latDirection = 0
     longtitude = 0
-    #0 = East; 1 = West
-    lonDirection = 0
-    #位置特定品質
-    locationQuality = 0
     #使用衛星数
     usingSatelliteNum = 0
     #海抜
@@ -23,12 +18,14 @@ class Data:
     coordX = 0
     #Y座標
     coordY = 0
+    #位置特定品質
+    locationQuality = 0
 
     #RMC
     speed = 0
     direction = 0
     date = ""
-
+    """
 
 
     def __init__(self):
@@ -39,45 +36,59 @@ class Data:
 
 class GGAData (Data):
 
-    def __init__ (self, time, latitude, latDirection, longtitude, lonDirection, locationQuality, usingSatelliteNum, altitude, geoidHeight, coordX, coordY):
-        self.time = time
-        self.latitude = latitude
-        self.latDirection = latDirection
-        self.longtitude = longtitude
-        self.lonDirection = lonDirection
-        self.locationQuality = locationQuality
-        self.usingSatelliteNum = usingSatelliteNum
-        self.altitude = altitude
-        self.geoidHeight = geoidHeight
-        self.coordX = coordX
-        self.coordY = coordY
+    objectNameList = ["timeText", "latText", "lonText", "satelliteNumText", "altText", "geoidHeightText", "coordXText", "coordYText", "locationQualityText", "circleColorText"]
+    loop = 10
+    locationQualitySentence = ["Undefined", "SPS", "Differential GPS"]
+    circleColorSentence = ["black", "blue", "green"]
+
+    def __init__ (self, componentList, lat_degree, lon_degree, coordX, coordY):
+
+        self.time = componentList[1][:2] + ":" + componentList[1][2:4] + ":" + componentList[1][4:]
+        self.latitude = "Lat: " + componentList[3] + "  " + str(lat_degree)
+        self.longtitude = "Lon: " + componentList[5] + "  " + str(lon_degree)
+        self.usingSatelliteNum = "Number of Using Satellites: " + componentList[7]
+        self.altitude = "Alt: " + componentList[9] + " m"
+        self.geoidHeight = "Geoid Height: " + componentList[11] + " m"
+        self.coordX = "Coord X: " + str(coordX)
+        self.coordY = "Coord Y: " + str(coordY)
+        self.locationQuality = "LocationQuality: " + self.locationQualitySentence[int(componentList[6])]
+        self.circleColor = self.circleColorSentence[int(componentList[6])]
+
+        self.infoList = [self.time, self.latitude, self.longtitude, self.usingSatelliteNum, self.altitude, self.geoidHeight, self.coordX, self.coordY, self.locationQuality, self.circleColor]
 
         pass
 
     def debugPrint(self):
-        print("Time: ", self.time)
-
-        print("Lat: ", self.latDirection, self.coordY)
-        print("Lon: ", self.latDirection, self.coordX)
-
-        print("Alt: ", self.altitude)
+        print(self.time)
+        print(self.latitude)
+        print(self.longtitude)
+        print(self.usingSatelliteNum)
+        print(self.altitude)
+        print(self.geoidHeight)
+        print(self.coordX)
+        print(self.coordY)
         print("")
 
 
 class RMCData(Data):
 
-    def __init__ (self, speed, direction, date):
-        self.speed = speed
-        self.direction = direction
-        self.date = date
+    objectNameList = ["speedText", "directionText", "dateText"]
+    loop = 3
+
+    def __init__ (self, componentList):
+
+        self.speed = "Spd: " + str(float(componentList[7]) * 1.852) + " km/h"
+        self.direction = "Direction: " + componentList[8] + " degree"
+        self.date = "(UTC) " + "20" + componentList[9][4:] + "/" + componentList[9][2:4] + "/" + componentList[9][:2]
+
+        self.infoList = [self.speed, self.direction, self.date]
 
         pass
 
     def debugPrint(self):
-        print("Speed: ", self.speed)
-        print("Direction: ", self.direction)
-        print("Date: ", self.date)
-        print("TimeO:  ", self.time)
+        print(self.speed)
+        print(self.direction)
+        print(self.date)
         print("")
 
 

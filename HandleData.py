@@ -55,17 +55,13 @@ class HandleData:
         #[6]:locationQuality
         #[7]:usingSatelliteNum
         #[9]:altitude
-        #[10]:geoidHeight
+        #[11]:geoidHeight
 
-            time = componentList[1][:2] + ":" + componentList[1][2:4] + ":" + componentList[1][4:]
 
             lat_degree, lon_degree = self.degminToDegree(componentList[2], componentList[4])
-
             coordX, coordY = self.latlonToXY(lat_degree, componentList[3], lon_degree, componentList[5])
 
-            #self.checkSum()
-
-            GGAInfo = Data.GGAData(time, componentList[2], componentList[3], componentList[4], componentList[5], componentList[6], componentList[7], componentList[9], componentList[11], coordX, coordY)
+            GGAInfo = Data.GGAData(componentList, lat_degree, lon_degree, coordX, coordY)
             GGAInfo.debugPrint()
 
             return GGAInfo
@@ -78,10 +74,7 @@ class HandleData:
             #[8]:direction
             #[9]:date
 
-            speed = float(componentList[7]) * 1.852
-            date = "20" + componentList[9][4:] + "/" + componentList[9][2:4] + "/" + componentList[9][:2]
-
-            RMCInfo = Data.RMCData(speed, componentList[8], date)
+            RMCInfo = Data.RMCData(componentList)
             RMCInfo.debugPrint()
 
             return RMCInfo
