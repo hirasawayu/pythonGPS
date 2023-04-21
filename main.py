@@ -4,10 +4,12 @@ from pathlib import Path
 import urllib.request
 import sys
 
-from PySide6.QtWidgets import QApplication
-from PySide6.QtQuick import QQuickView, QQuickWindow
+from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtCore import QObject
+from PySide6.QtQuick import  QQuickWindow
+from PySide6.QtCore import QTimer
+
+
 
 import Control
 
@@ -15,7 +17,7 @@ import Control
 def main():
 
 
-    app = QApplication()
+    app = QGuiApplication()
 
     engine = QQmlApplicationEngine()
     engine.load("mainWindow.qml")
@@ -25,12 +27,15 @@ def main():
     window = QQuickWindow()
     window = engine.rootObjects()[0]
     window.show()
-    qObject = engine.rootObjects()[0].findChild(QObject, "text1")
-    qObject.setProperty("text", "Changed")
 
-    #インスタンス生成
     control = Control.Control()
-    control.startControl()
+
+    timer = QTimer()
+    timer.setInterval(1000)
+    timer.timeout.connect(control.startControl)
+    timer.start()
+
+
 
     sys.exit(app.exec())
 

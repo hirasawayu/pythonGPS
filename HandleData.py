@@ -13,8 +13,8 @@ class HandleData:
 
         file = open('NMEA.txt', 'r')
         extractedData = ""
-        lineCount = 0
-
+        #Timer
+        #sleep(1)
 
         for i in range(linePointer):
             file.readline()
@@ -29,6 +29,7 @@ class HandleData:
 
             elif not line:
                 loopFlag = False
+                break
 
             linePointer += 1
 
@@ -64,16 +65,30 @@ class HandleData:
 
             #self.checkSum()
 
-            #Timer
-            sleep(1)
+            GGAInfo = Data.GGAData(time, componentList[2], componentList[3], componentList[4], componentList[5], componentList[6], componentList[7], componentList[9], componentList[11], coordX, coordY)
+            GGAInfo.debugPrint()
 
-            GGAInfo = Data.Data(time, componentList[2], componentList[3], componentList[4], componentList[5], componentList[6], componentList[7], componentList[9], componentList[11], coordX, coordY)
+            return GGAInfo
+
+        elif "$GPRMC" in line:
+            componentList = line.split(',')
+
+            #componentList
+            #[7]:speed
+            #[8]:direction
+            #[9]:date
+
+            speed = float(componentList[7]) * 1.852
+            date = "20" + componentList[9][4:] + "/" + componentList[9][2:4] + "/" + componentList[9][:2]
+
+            RMCInfo = Data.RMCData(speed, componentList[8], date)
+            RMCInfo.debugPrint()
+
+            return RMCInfo
 
         else:
-            GGAInfo = 0
 
-        return GGAInfo
-
+            return 0
 
 
     #緯度経度の単位を度分から度に変換

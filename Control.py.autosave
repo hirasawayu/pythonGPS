@@ -40,7 +40,7 @@ class Control:
             print("TYPE:   ", type(info))
 
 
-        #self.setQmlProperty()
+        self.setQmlProperty()
 
 
 
