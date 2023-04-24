@@ -37,6 +37,7 @@ class Data:
 class GGAData (Data):
 
     objectNameList = ["timeText", "latText", "lonText", "satelliteNumText", "altText", "geoidHeightText", "coordXText", "coordYText", "locationQualityText", "circleColorText"]
+    propertyList = ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text"]
     loop = 10
     locationQualitySentence = ["Undefined", "SPS", "Differential GPS"]
     circleColorSentence = ["black", "blue", "green"]
@@ -72,13 +73,15 @@ class GGAData (Data):
 
 class RMCData(Data):
 
-    objectNameList = ["speedText", "directionText", "dateText"]
-    loop = 3
+    objectNameList = ["speedText", "directionText", "northPointerRotataion", "dateText"]
+    propertyList = ["text", "text", "angle", "text"]
+    loop = 4
 
     def __init__ (self, componentList):
 
         self.speed = "Spd: " + str(float(componentList[7]) * 1.852) + " km/h"
         self.direction = "Direction: " + componentList[8] + " degree"
+        self.northDirection = 180 - int(componentList[8])
         self.date = "(UTC) " + "20" + componentList[9][4:] + "/" + componentList[9][2:4] + "/" + componentList[9][:2]
 
         self.infoList = [self.speed, self.direction, self.date]
@@ -88,19 +91,21 @@ class RMCData(Data):
     def debugPrint(self):
         print(self.speed)
         print(self.direction)
+        print("northDirection: " + self.northDirection)
         print(self.date)
         print("")
 
 
 class GSVData(Data):
 
-    #objectNameList: ["satelliteNoText(n)", "satelliteElevationAngleText(n)", "satelliteDirectionText(n)", satelliteExplanationText(n)]
+    #objectNameList: ["satelliteViewText(n)", "satelliteElevationAngleText(n)", "satelliteDirectionText(n)", satelliteExplanationText(n)]
     loop = 4
     infoList = []
     objectNameList = []
+    propertyList = []
 
 
-    def __init__ (self, componentList):
+    def __init__ (self, componentList, northDirection):
 
         self.totalSatelliteNum = int(componentList[3])
         self.countGSV = ((int(componentList[2]) - 1) * 4)
@@ -111,17 +116,18 @@ class GSVData(Data):
             arrayPosition = (((self.countGSV - 1) % 4) * 4)
 
             self.satelliteNo = componentList[4 + arrayPosition]
-            self.satelliteElevationAngle = componentList[5 + arrayPosition]
-            self.satelliteDirection = componentList[6 + arrayPosition]
+            self.satelliteElevationAngle = int(componentList[5 + arrayPosition]) / 90
+            self.satelliteDirection = northDirection + int(componentList[6 + arrayPosition])
             self.satelliteExplanation = "#" + '%04d' % int(componentList[4 + arrayPosition]) + ":" + componentList[7 + arrayPosition] + "dB"
 
-            self.satelliteNoName = "satelliteNoText" + str(self.countGSV)
+            self.satelliteNoName = "satelliteViewText" + str(self.countGSV)
             self.satelliteElevationAngleName = "satelliteElevationAngleText" + str(self.countGSV)
             self.satelliteDirectionName = "satelliteDirectionText" + str(self.countGSV)
             self.satelliteExplanationName = "satelliteExplanationText" + str(self.countGSV)
 
             self.infoList += [self.satelliteNo, self.satelliteElevationAngle, self.satelliteDirection, self.satelliteExplanation]
             self.objectNameList += [self.satelliteNoName, self.satelliteElevationAngleName, self.satelliteDirectionName, self.satelliteExplanationName]
+            self.propertyList += ["text", "anchors.topMargin", ]
 
             self.debugPrintPartial()
 
