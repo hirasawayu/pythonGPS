@@ -92,4 +92,62 @@ class RMCData(Data):
         print("")
 
 
+class GSVData(Data):
+
+    #objectNameList: ["satelliteNo(n)", "satelliteElevationAngle(n)", "satelliteDirection(n)", satelliteExplanation(n)]
+    loop = 4
+    infoList = []
+    objectNameList = []
+
+
+    def __init__ (self, componentList):
+
+        self.totalSatelliteNum = componentList[3]
+        self.countGSV = ((int(componentList[2]) - 1) * 4)
+
+        for i in range(4):
+
+            self.countGSV += 1
+            arrayPosition = (((self.countGSV - 1) % 4) * 4)
+
+            self.satelliteNo = componentList[4 + arrayPosition]
+            self.satelliteElevationAngle = componentList[5 + arrayPosition]
+            self.satelliteDirection = componentList[6 + arrayPosition]
+            self.satelliteExplanation = "#" + '%04d' % int(componentList[4 + arrayPosition]) + ":" + componentList[7 + arrayPosition] + "dB"
+
+            self.satelliteNoName = "satelliteNoText" + str(self.countGSV)
+            self.satelliteElevationAngleName = "satelliteElevationAngleText" + str(self.countGSV)
+            self.satelliteDirectionName = "satelliteDirectionText" + str(self.countGSV)
+            self.satelliteExplanationName = "satelliteExplanationText" + str(self.countGSV)
+
+            self.infoList += [self.satelliteNo, self.satelliteElevationAngle, self.satelliteDirection, self.satelliteExplanation]
+            self.objectNameList += [self.satelliteNoName, self.satelliteElevationAngleName, self.satelliteDirectionName, self.satelliteExplanationName]
+
+            self.debugPrintPartial()
+
+            if self.countGSV == componentList[3]:
+                self.loop = i + 1
+                break
+
+        pass
+
+    def debugPrintPartial(self):
+        print("totalSatelliteNum: ", self.totalSatelliteNum)
+        print("countGSV: ", self.countGSV)
+        print(self.satelliteNoName, " : ", self.satelliteNo)
+        print(self.satelliteElevationAngleName, " : ", self.satelliteElevationAngle)
+        print(self.satelliteDirectionName, " : ", self.satelliteDirection)
+        print(self.satelliteExplanationName, " : ", self.satelliteExplanation)
+
+
+    def debugPrintAll(self):
+
+        print("ALL PRINT")
+        for i in range (self.loop * 4):
+            print(self.infoList[i], " : ", self.objectNameList[i])
+
+
+
+
+
 

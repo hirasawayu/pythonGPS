@@ -1,6 +1,5 @@
 # This Python file uses the following encoding: utf-8
 from pyproj import Transformer
-from time import sleep
 import Data
 
 class HandleData:
@@ -78,6 +77,28 @@ class HandleData:
             RMCInfo.debugPrint()
 
             return RMCInfo
+
+        elif "$GPGSV" in line:
+            componentList = line.split(',')
+
+            #componentList
+            #[1]:totalSentenceNum
+            #[2]:sentenceNo
+            #[3]:totalSatelliteNum
+            #[4 + 4n]:satelliteNo
+            #[5 + 4n]:satelliteElevationAngle
+            #[6 + 4n]:satelliteDirection
+            #[7 + 4n]:satelliteCNoise
+
+            #総衛星数に合わせてループ回数を調整
+
+            GSVInfo = Data.GSVData(componentList)
+            GSVInfo.debugPrintAll()
+
+            return GSVInfo
+
+
+
 
         else:
 
