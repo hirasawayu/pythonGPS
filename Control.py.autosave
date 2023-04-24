@@ -52,5 +52,5 @@ class Control:
     def setInfo(self, info):
 
         for i in range(info.loop):
-            self.setQmlProperty(info.objectNameList[i], "text", info.infoList[i])
+            self.setQmlProperty(info.objectNameList[i], info.property[i] , info.infoList[i])
 

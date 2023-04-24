@@ -37,6 +37,7 @@ class Data:
 class GGAData (Data):
 
     objectNameList = ["timeText", "latText", "lonText", "satelliteNumText", "altText", "geoidHeightText", "coordXText", "coordYText", "locationQualityText", "circleColorText"]
+    property = ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text"]
     loop = 10
     locationQualitySentence = ["Undefined", "SPS", "Differential GPS"]
     circleColorSentence = ["black", "blue", "green"]
@@ -73,6 +74,7 @@ class GGAData (Data):
 class RMCData(Data):
 
     objectNameList = ["speedText", "directionText", "dateText"]
+    property = ["text", "text", "text"]
     loop = 3
 
     def __init__ (self, componentList):
