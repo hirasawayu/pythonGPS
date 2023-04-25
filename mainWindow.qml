@@ -141,9 +141,9 @@ Window {
         height: 400
         radius: width * 0.5
         border.width: 2
-        anchors.left: parent.left
+        anchors.left: parent.right
         anchors.top: parent.top
-        anchors.leftMargin: 30
+        anchors.leftMargin: -870
         anchors.topMargin: 100
 
         property alias circleColor: circleColorText.text
@@ -221,6 +221,389 @@ Window {
 
 
         }
+
+        Rectangle {
+            id: northPointer
+            x: 201
+            width: 3
+            height: 200
+            color: "red"
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            transform: Rotation{
+
+                objectName: "northPointerRotation"
+                origin.x: 0
+                origin.y: 0
+                angle: 180
+            }
+
+            Text {
+                id: northPointerText
+                width: 20
+                height: 20
+                color: "red"
+                text: "N"
+                anchors.left: parent.left
+                anchors.top: parent.top
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.leftMargin: 0
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pointSize: 15
+                anchors.topMargin: 200
+            }
+        }
+
+        Rectangle {
+            id: satelliteView1
+            objectName: "satelliteView1"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText1
+                objectName:"satelliteViewText1"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView2
+            objectName: "satelliteView2"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText2
+                objectName:"satelliteViewText2"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView3
+            objectName: "satelliteView3"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText3
+                objectName:"satelliteViewText3"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView4
+            objectName: "satelliteView4"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText4
+                objectName:"satelliteViewText4"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView5
+            objectName: "satelliteView5"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText5
+                objectName:"satelliteViewText5"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView6
+            objectName: "satelliteView6"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText6
+                objectName:"satelliteViewText6"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView7
+            objectName: "satelliteView7"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText7
+                objectName:"satelliteViewText7"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView8
+            objectName: "satelliteView8"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText8
+                objectName:"satelliteViewText8"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView9
+            objectName: "satelliteView9"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText9
+                objectName:"satelliteViewText9"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView10
+            objectName: "satelliteView10"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText10
+                objectName:"satelliteViewText10"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView11
+            objectName: "satelliteView11"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText11
+                objectName:"satelliteViewText11"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView12
+            objectName: "satelliteView12"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText12
+                objectName:"satelliteViewText12"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView13
+            objectName: "satelliteView13"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText13
+                objectName:"satelliteViewText13"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView14
+            objectName: "satelliteView14"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText14
+                objectName:"satelliteViewText14"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
     }
 
     Text {
@@ -253,6 +636,231 @@ Window {
         verticalAlignment: Text.AlignVCenter
         anchors.topMargin: 0
         anchors.leftMargin: 10
+    }
+
+    Rectangle {
+        id: showGSVArea
+        width: 400
+        height: 220
+        color: "black"
+        anchors.left: dateText.left
+        anchors.top: parent.top
+        anchors.leftMargin: 0
+        anchors.topMargin: 360
+
+        Text {
+            id: satelliteExplanationText1
+            objectName: "satelliteExplanationText1"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.top: parent.top
+            font.pixelSize: 22
+            color: "white"
+            verticalAlignment: Text.AlignVCenter
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText2
+            objectName: "satelliteExplanationText2"
+            height: 30
+            text: qsTr("")
+            anchors.left: parent.left
+            anchors.right: satelliteExplanationText1.right
+            anchors.top: satelliteExplanationText1.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText3
+            objectName: "satelliteExplanationText3"
+            height: 30
+            text: qsTr("")
+            anchors.left: parent.left
+            anchors.right: satelliteExplanationText1.right
+            anchors.top: satelliteExplanationText2.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText4
+            objectName: "satelliteExplanationText4"
+            height: 30
+            text: qsTr("")
+            anchors.left: parent.left
+            anchors.right: satelliteExplanationText1.right
+            anchors.top: satelliteExplanationText3.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText5
+            objectName: "satelliteExplanationText5"
+            height: 30
+            text: qsTr("")
+            anchors.left: parent.left
+            anchors.right: satelliteExplanationText1.right
+            anchors.top: satelliteExplanationText4.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText6
+            objectName: "satelliteExplanationText6"
+            height: 30
+            text: qsTr("")
+            anchors.left: parent.left
+            anchors.right: satelliteExplanationText1.right
+            anchors.top: satelliteExplanationText5.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText7
+            objectName: "satelliteExplanationText7"
+            height: 30
+            text: qsTr("")
+            anchors.left: parent.left
+            anchors.right: satelliteExplanationText1.right
+            anchors.top: satelliteExplanationText6.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText8
+            objectName: "satelliteExplanationText8"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText1.right
+            anchors.top: parent.top
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 50
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText9
+            objectName: "satelliteExplanationText9"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText8.left
+            anchors.top: satelliteExplanationText8.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText10
+            objectName: "satelliteExplanationText10"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText8.left
+            anchors.top: satelliteExplanationText9.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText11
+            objectName: "satelliteExplanationText11"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText8.left
+            anchors.top: satelliteExplanationText10.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText12
+            objectName: "satelliteExplanationText12"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText8.left
+            anchors.top: satelliteExplanationText11.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText13
+            objectName: "satelliteExplanationText13"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText8.left
+            anchors.top: satelliteExplanationText12.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText14
+            objectName: "satelliteExplanationText14"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText8.left
+            anchors.top: satelliteExplanationText13.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
     }
 
 }

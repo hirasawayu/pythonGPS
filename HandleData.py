@@ -1,6 +1,7 @@
 # This Python file uses the following encoding: utf-8
 from pyproj import Transformer
-from time import sleep
+import math
+
 import Data
 
 class HandleData:
@@ -13,8 +14,6 @@ class HandleData:
 
         file = open('NMEA.txt', 'r')
         extractedData = ""
-        #Timer
-        #sleep(1)
 
         for i in range(linePointer):
             file.readline()
@@ -41,6 +40,8 @@ class HandleData:
 
 
     def analyzeLineInfo(self, line):
+
+        #result = self.checkSum(line)
 
 
         if "$GPGGA" in line:
@@ -76,8 +77,33 @@ class HandleData:
 
             RMCInfo = Data.RMCData(componentList)
             RMCInfo.debugPrint()
+            self.directionNum = float(componentList[8])
 
             return RMCInfo
+
+        elif "$GPGSV" in line:
+            componentList = line.split(',')
+
+            #componentList
+            #[1]:totalSentenceNum
+            #[2]:sentenceNo
+            #[3]:totalSatelliteNum
+            #[4 + 4n]:satelliteNo
+            #[5 + 4n]:satelliteElevationAngle
+            #[6 + 4n]:satelliteDirection
+            #[7 + 4n]:satelliteCNoise
+
+
+
+
+
+            GSVInfo = Data.GSVData(componentList, self.directionNum)
+            #GSVInfo.debugPrintAll()
+
+            return GSVInfo
+
+
+
 
         else:
 
@@ -132,11 +158,15 @@ class HandleData:
 
 
 
-    def checkSum(self):
+    def checkSum(self, line):
 
-       str = "GPGGA,234248,3926.5029,N,11946.1984,W,2,12,0.8,1381.7,M,-22.0,M,,"
-       sum = 0
-       pointer = 0
+        checkLine = line[1:-3]
+        print(checkLine)
+
+
+
+
+
 
 
        #for i in range(len(str)):

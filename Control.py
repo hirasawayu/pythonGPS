@@ -16,14 +16,13 @@ class Control:
 
         #タイマーセット
         self.timer = QTimer()
-        self.timer.setInterval(1)
+        self.timer.setInterval(1000)
         self.timer.timeout.connect(self.startControl)
         self.timer.start()
 
         pass
 
     def startControl(self):
-        print("calling")
 
         handleData = HandleData.HandleData()
         extractedData, self.linePointer, loopFlag = handleData.extractData(self.linePointer)
@@ -40,7 +39,6 @@ class Control:
             info = handleData.analyzeLineInfo(extractedDataList[i])
 
             if info != 0:
-                print(info.infoList[1])
                 self.setInfo(info)
 
 
@@ -53,19 +51,5 @@ class Control:
     def setInfo(self, info):
 
         for i in range(info.loop):
-            self.setQmlProperty(info.objectNameList[i], "text", info.infoList[i])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            self.setQmlProperty(info.objectNameList[i], info.propertyList[i], info.infoList[i])
 
