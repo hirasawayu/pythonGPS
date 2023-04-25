@@ -1,5 +1,5 @@
 # This Python file uses the following encoding: utf-8
-
+import math
 
 class Data:
 
@@ -73,7 +73,7 @@ class GGAData (Data):
 
 class RMCData(Data):
 
-    objectNameList = ["speedText", "directionText", "northPointerRotataion", "dateText"]
+    objectNameList = ["speedText", "directionText", "northPointerRotation", "dateText"]
     propertyList = ["text", "text", "angle", "text"]
     loop = 4
 
@@ -81,31 +81,32 @@ class RMCData(Data):
 
         self.speed = "Spd: " + str(float(componentList[7]) * 1.852) + " km/h"
         self.direction = "Direction: " + componentList[8] + " degree"
-        self.northDirection = 180 - int(componentList[8])
+        self.northDirection = float(componentList[8]) - 180
         self.date = "(UTC) " + "20" + componentList[9][4:] + "/" + componentList[9][2:4] + "/" + componentList[9][:2]
 
-        self.infoList = [self.speed, self.direction, self.date]
+        self.infoList = [self.speed, self.direction, self.northDirection, self.date]
 
         pass
 
     def debugPrint(self):
         print(self.speed)
         print(self.direction)
-        print("northDirection: " + self.northDirection)
+        print("northDirection: ", self.northDirection)
         print(self.date)
         print("")
 
 
 class GSVData(Data):
 
-    #objectNameList: ["satelliteViewText(n)", "satelliteElevationAngleText(n)", "satelliteDirectionText(n)", satelliteExplanationText(n)]
-    loop = 4
-    infoList = []
-    objectNameList = []
-    propertyList = []
 
 
-    def __init__ (self, componentList, northDirection):
+
+
+    def __init__ (self, componentList, direction):
+
+        self.infoList = []
+        self.objectNameList = []
+        self.propertyList = []
 
         self.totalSatelliteNum = int(componentList[3])
         self.countGSV = ((int(componentList[2]) - 1) * 4)
@@ -113,44 +114,71 @@ class GSVData(Data):
         for i in range(4):
 
             self.countGSV += 1
-            arrayPosition = (((self.countGSV - 1) % 4) * 4)
 
-            self.satelliteNo = componentList[4 + arrayPosition]
-            self.satelliteElevationAngle = int(componentList[5 + arrayPosition]) / 90
-            self.satelliteDirection = northDirection + int(componentList[6 + arrayPosition])
-            self.satelliteExplanation = "#" + '%04d' % int(componentList[4 + arrayPosition]) + ":" + componentList[7 + arrayPosition] + "dB"
+            if self.countGSV <= self.totalSatelliteNum:
+
+                arrayPosition = (((self.countGSV - 1) % 4) * 4)
+                self.satelliteElevationAngle = int(componentList[5 + arrayPosition])
+                self.satelliteDirection = int(componentList[6 + arrayPosition]) - float(direction)
+
+
+                self.satelliteNo = componentList[4 + arrayPosition]
+                self.satelliteCoordX, self.satelliteCoordY = self.calculation(direction)
+                self.satelliteVisible = "true"
+                self.satelliteExplanation = "#" + '%04d' % int(componentList[4 + arrayPosition]) + ":" + componentList[7 + arrayPosition] + "dB"
+
+            #データが無い場合は初期化
+            else:
+                self.satelliteNum = ""
+                self.satelliteCoordX = 180
+                self.satelliteCoordY = 180
+                self.satelliteVisible = "false"
+                self.satelliteExplanation = ""
 
             self.satelliteNoName = "satelliteViewText" + str(self.countGSV)
-            self.satelliteElevationAngleName = "satelliteElevationAngleText" + str(self.countGSV)
-            self.satelliteDirectionName = "satelliteDirectionText" + str(self.countGSV)
-            self.satelliteExplanationName = "satelliteExplanationText" + str(self.countGSV)
+            self.satelliteViewName = "satelliteView" + str(self.countGSV)
+            self.satelliteViewTextName = "satelliteExplanationText" + str(self.countGSV)
 
-            self.infoList += [self.satelliteNo, self.satelliteElevationAngle, self.satelliteDirection, self.satelliteExplanation]
-            self.objectNameList += [self.satelliteNoName, self.satelliteElevationAngleName, self.satelliteDirectionName, self.satelliteExplanationName]
-            self.propertyList += ["text", "anchors.topMargin", ]
+            self.infoList += [self.satelliteNo, self.satelliteCoordX, self.satelliteCoordY, self.satelliteVisible, self.satelliteExplanation]
+            self.objectNameList += [self.satelliteNoName, self.satelliteViewName, self.satelliteViewName, self.satelliteViewName, self.satelliteViewTextName]
+            self.propertyList += ["text", "x", "y", "visible", "text"]
 
             self.debugPrintPartial()
 
-            if self.countGSV == self.totalSatelliteNum:
-                self.loop = i + 1
-                break
+        self.loop = len(self.infoList)
 
         pass
+
+    def calculation(self, directionNum):
+
+        length = self.satelliteElevationAngle / 90 * 200
+
+        satelliteCoordX = 180 + (math.sin(math.radians(self.satelliteDirection - directionNum))) * length
+        satelliteCoordY = 180 + (math.cos(math.radians(self.satelliteDirection - directionNum))) * length
+
+        print("length: ", length)
+        return satelliteCoordX, satelliteCoordY
+
 
     def debugPrintPartial(self):
         print("totalSatelliteNum: ", self.totalSatelliteNum)
         print("countGSV: ", self.countGSV)
         print(self.satelliteNoName, " : ", self.satelliteNo)
-        print(self.satelliteElevationAngleName, " : ", self.satelliteElevationAngle)
-        print(self.satelliteDirectionName, " : ", self.satelliteDirection)
-        print(self.satelliteExplanationName, " : ", self.satelliteExplanation)
+        print(self.satelliteViewName)
+        print("coordX: ", self.satelliteCoordX)
+        print("coordY: ", self.satelliteCoordY)
+        print(self.satelliteViewTextName, " : ", self.satelliteExplanation)
+        print("satelliteDirection: ", self.satelliteDirection)
+        print("")
 
 
     def debugPrintAll(self):
 
         print("ALL PRINT")
-        for i in range (self.loop * 4):
+        for i in range (self.loop):
             print(self.infoList[i], " : ", self.objectNameList[i])
+
+        print("")
 
 
 

@@ -1,14 +1,13 @@
 import QtQuick 2.15
-//import QtQuick.Window 2.15
+import QtQuick.Window 2.15
 
-//Window {
-Rectangle {
+Window {
+//Rectangle {
     id: window
     width: 900
     height: 600
     visible: true
     color: "black"
-    border.color: "#ffffff"
 
     Text {
         id: dateText
@@ -236,7 +235,7 @@ Rectangle {
                 objectName: "northPointerRotation"
                 origin.x: 0
                 origin.y: 0
-                angle: "180"
+                angle: 180
             }
 
             Text {
@@ -259,6 +258,9 @@ Rectangle {
         Rectangle {
             id: satelliteView1
             objectName: "satelliteView1"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -281,6 +283,9 @@ Rectangle {
         Rectangle {
             id: satelliteView2
             objectName: "satelliteView2"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -303,6 +308,9 @@ Rectangle {
         Rectangle {
             id: satelliteView3
             objectName: "satelliteView3"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -325,6 +333,9 @@ Rectangle {
         Rectangle {
             id: satelliteView4
             objectName: "satelliteView4"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -347,6 +358,9 @@ Rectangle {
         Rectangle {
             id: satelliteView5
             objectName: "satelliteView5"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -369,6 +383,9 @@ Rectangle {
         Rectangle {
             id: satelliteView6
             objectName: "satelliteView6"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -391,6 +408,9 @@ Rectangle {
         Rectangle {
             id: satelliteView7
             objectName: "satelliteView7"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -413,6 +433,9 @@ Rectangle {
         Rectangle {
             id: satelliteView8
             objectName: "satelliteView8"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -435,6 +458,9 @@ Rectangle {
         Rectangle {
             id: satelliteView9
             objectName: "satelliteView9"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -457,6 +483,9 @@ Rectangle {
         Rectangle {
             id: satelliteView10
             objectName: "satelliteView10"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -479,6 +508,9 @@ Rectangle {
         Rectangle {
             id: satelliteView11
             objectName: "satelliteView11"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -501,6 +533,9 @@ Rectangle {
         Rectangle {
             id: satelliteView12
             objectName: "satelliteView12"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -523,6 +558,9 @@ Rectangle {
         Rectangle {
             id: satelliteView13
             objectName: "satelliteView13"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -545,6 +583,9 @@ Rectangle {
         Rectangle {
             id: satelliteView14
             objectName: "satelliteView14"
+            x: 180
+            y: 180
+            visible: false
             width: 40
             height: 40
             color: "black"
@@ -617,7 +658,6 @@ Rectangle {
             font.pixelSize: 22
             color: "white"
             verticalAlignment: Text.AlignVCenter
-            anchors.horizontalCenter: parent.horizontalCenter
             anchors.topMargin: 0
         }
 

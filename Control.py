@@ -39,7 +39,6 @@ class Control:
             info = handleData.analyzeLineInfo(extractedDataList[i])
 
             if info != 0:
-                print(" ")
                 self.setInfo(info)
 
 
@@ -52,5 +51,5 @@ class Control:
     def setInfo(self, info):
 
         for i in range(info.loop):
-            self.setQmlProperty(info.objectNameList[i], "text", info.infoList[i])
+            self.setQmlProperty(info.objectNameList[i], info.propertyList[i], info.infoList[i])
 
