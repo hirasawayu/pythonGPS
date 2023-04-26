@@ -4,7 +4,8 @@ import Data
 
 class HandleData:
 
-    directionNum = 0
+    direction = 0
+    directionValidFlag = False
 
     def __init__(self):
 
@@ -12,7 +13,7 @@ class HandleData:
 
     def extractData(self, linePointer):
 
-        file = open('NMEALong1.txt', 'r')
+        file = open('NMEA.txt', 'r')
         extractedData = ""
 
         for i in range(linePointer):
@@ -72,7 +73,7 @@ class HandleData:
 
 
             GGAInfo = Data.GGAData(componentList)
-            GGAInfo.debugPrint()
+            #GGAInfo.debugPrint()
 
             return GGAInfo
 
@@ -85,9 +86,12 @@ class HandleData:
             #[9]:date
 
             RMCInfo = Data.RMCData(componentList)
-            RMCInfo.debugPrint()
+            #RMCInfo.debugPrint()
+
             if (componentList[2] == "A"):
-                self.directionNum = float(componentList[8])
+                self.direction = float(componentList[8])
+                self.directionValidFlag = True
+
 
             return RMCInfo
 
@@ -103,7 +107,11 @@ class HandleData:
             #[6 + 4n]:satelliteDirection
             #[7 + 4n]:satelliteCNoise
 
-            GSVInfo = Data.GSVData(componentList, self.directionNum)
+            if self.directionValidFlag == False:
+                return 0
+
+
+            GSVInfo = Data.GSVData(componentList, self.direction)
             #GSVInfo.debugPrintAll()
 
             return GSVInfo

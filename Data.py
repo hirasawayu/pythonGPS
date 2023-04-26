@@ -140,7 +140,7 @@ class RMCData(Data):
         #無効なデータの場合
         if componentList[2] == "A":
 
-            self.speed = "Spd: " + str(float(componentList[7]) * 1.852) + " km/h"
+            self.speed = "Spd: " + '{:.2f}'.format(float(componentList[7]) * 1.852) + " km/h"
             self.direction = "Direction: " + componentList[8] + " degree"
             self.northDirection = float(componentList[8]) - 180
 
@@ -166,14 +166,18 @@ class RMCData(Data):
 
 class GSVData(Data):
 
-    def __init__ (self, componentList, direction):
+    infoList =[]
+    objectNameList = []
+    propertyList = []
 
-        self.infoList = []
-        self.objectNameList = []
-        self.propertyList = []
+    def __init__ (self, componentList, direction):
 
         self.totalSatelliteNum = int(componentList[3])
         self.countGSV = ((int(componentList[2]) - 1) * 4)
+
+        #初期化データをセット
+        if componentList[2] == "1":
+            self.clearCache()
 
         for i in range(4):
 
@@ -214,6 +218,14 @@ class GSVData(Data):
         self.loop = len(self.infoList)
 
         pass
+
+    def clearCache(self):
+
+        for i in range(1, 15):
+            self.infoList += ["false", ""]
+            self.objectNameList += ["satelliteView" + str(i), "satelliteExplanationText" + str(i)]
+            self.propertyList += ["visible", "text"]
+
 
     def calculation(self, directionNum):
 
