@@ -12,7 +12,7 @@ class HandleData:
 
     def extractData(self, linePointer):
 
-        file = open('NMEALong.txt', 'r')
+        file = open('NMEALong1.txt', 'r')
         extractedData = ""
 
         for i in range(linePointer):
