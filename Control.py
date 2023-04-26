@@ -16,7 +16,7 @@ class Control:
 
         #タイマーセット
         self.timer = QTimer()
-        self.timer.setInterval(1000)
+        self.timer.setInterval(10)
         self.timer.timeout.connect(self.startControl)
         self.timer.start()
 

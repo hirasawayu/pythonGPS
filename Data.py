@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: utf-8
+from pyproj import Transformer
 import math
 
 class Data:
@@ -36,71 +37,134 @@ class Data:
 
 class GGAData (Data):
 
-    objectNameList = ["timeText", "latText", "lonText", "satelliteNumText", "altText", "geoidHeightText", "coordXText", "coordYText", "locationQualityText", "circleColorText"]
+    objectNameList = ["timeText", "locationQualityText", "satelliteNumText", "circleColorText", "latText", "lonText", "altText", "geoidHeightText", "coordXText", "coordYText"]
     propertyList = ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text"]
-    loop = 10
     locationQualitySentence = ["Undefined", "SPS", "Differential GPS"]
     circleColorSentence = ["black", "blue", "green"]
 
-    def __init__ (self, componentList, lat_degree, lon_degree, coordX, coordY):
+    def __init__ (self, componentList):
 
         self.time = componentList[1][:2] + ":" + componentList[1][2:4] + ":" + componentList[1][4:]
-        self.latitude = "Lat: " + componentList[3] + "  " + str(lat_degree)
-        self.longtitude = "Lon: " + componentList[5] + "  " + str(lon_degree)
-        self.usingSatelliteNum = "Number of Using Satellites: " + componentList[7]
-        self.altitude = "Alt: " + componentList[9] + " m"
-        self.geoidHeight = "Geoid Height: " + componentList[11] + " m"
-        self.coordX = "Coord X: " + str(coordX)
-        self.coordY = "Coord Y: " + str(coordY)
         self.locationQuality = "LocationQuality: " + self.locationQualitySentence[int(componentList[6])]
+        self.usingSatelliteNum = "Number of Using Satellites: " + componentList[7]
         self.circleColor = self.circleColorSentence[int(componentList[6])]
 
-        self.infoList = [self.time, self.latitude, self.longtitude, self.usingSatelliteNum, self.altitude, self.geoidHeight, self.coordX, self.coordY, self.locationQuality, self.circleColor]
+        if componentList[6] == "1" or componentList[6] == "2":
 
-        pass
+            lat_degree, lon_degree = self.degminToDegree(componentList[2], componentList[4])
+            coordX, coordY = self.latlonToXY(lat_degree, componentList[3], lon_degree, componentList[5])
+
+            self.latitude = "Lat: " + componentList[3] + "  " + componentList[2][:-7] + "." + componentList[2][-7:-5] + "'" + componentList[2][-4:-2] + "." + componentList[2][-2:] + "\""
+            self.longtitude = "Lon: " + componentList[5] + "  " + componentList[4][:-7] + "." + componentList[4][-7:-5] + "'" + componentList[4][-4:-2] + "." + componentList[4][-2:] + "\""
+            self.altitude = "Alt: " + componentList[9] + " m"
+            self.geoidHeight = "Geoid Height: " + componentList[11] + " m"
+            self.coordX = "Coord X: " + str(coordX)
+            self.coordY = "Coord Y: " + str(coordY)
+
+        #無効データの場合
+        else:
+            self.latitude = "Lat: ---"
+            self.longtitude = "Lon: ---"
+            self.altitude = "Alt : ---"
+            self.geoidHeight = "Geiod Height: ---"
+            self.coordX = "Coord X: ---"
+            self.coordY = "Coord Y: ---"
+
+        self.infoList = [self.time, self.locationQuality, self.usingSatelliteNum, self.circleColor, self.latitude, self.longtitude, self.altitude, self.geoidHeight, self.coordX, self.coordY]
+        self.loop = len(self.infoList)
+
+        return
+
+    #緯度経度の単位を度分から度に変換
+    def degminToDegree(self, latitude, longtitude):
+        #緯度
+        lat_degmin = float(latitude)
+        lat_int = int(lat_degmin/100)
+        lat_float = ( lat_degmin - (lat_int * 100) ) /60
+        lat_degree = lat_int + lat_float
+
+        #経度
+        lon_degmin = float(longtitude)
+        lon_int = int(lat_degmin/100)
+        lon_float = ( lon_degmin - (lat_int * 100) ) /60
+        lon_degree = lon_int + lon_float
+
+        return lat_degree, lon_degree
+
+
+    #緯度経度からXY座標を求める
+    def latlonToXY(self, lat_degree, latDirection, lon_degree, lonDirection):
+
+        transformer = Transformer.from_crs("EPSG:6668", "EPSG:6680")
+        y_tmp, x_tmp = transformer.transform(lat_degree, lon_degree)
+
+        #North:+, South:-
+        if latDirection == 'N':
+            y = y_tmp
+
+        elif latDirection == 'S':
+            y = -(y_tmp)
+
+        else:
+            print("NO DATA")
+
+
+        #East:+, West:-
+        if lonDirection == 'E':
+            x = x_tmp
+
+        elif lonDirection == 'W':
+            x = -(x_tmp)
+
+        else:
+            print("NO DATA")
+
+        return x, y
 
     def debugPrint(self):
-        print(self.time)
-        print(self.latitude)
-        print(self.longtitude)
-        print(self.usingSatelliteNum)
-        print(self.altitude)
-        print(self.geoidHeight)
-        print(self.coordX)
-        print(self.coordY)
+        for i in range(self.loop):
+            print("GGA[" , i , "]: ", self.infoList[i])
+
         print("")
 
 
 class RMCData(Data):
 
-    objectNameList = ["speedText", "directionText", "northPointerRotation", "dateText"]
-    propertyList = ["text", "text", "angle", "text"]
-    loop = 4
+    objectNameList = ["dateText", "speedText", "directionText", "northPointerRotation",]
+    propertyList = ["text", "text", "text", "angle"]
 
     def __init__ (self, componentList):
 
-        self.speed = "Spd: " + str(float(componentList[7]) * 1.852) + " km/h"
-        self.direction = "Direction: " + componentList[8] + " degree"
-        self.northDirection = float(componentList[8]) - 180
         self.date = "(UTC) " + "20" + componentList[9][4:] + "/" + componentList[9][2:4] + "/" + componentList[9][:2]
 
-        self.infoList = [self.speed, self.direction, self.northDirection, self.date]
+        #無効なデータの場合
+        if componentList[2] == "A":
 
-        pass
+            self.speed = "Spd: " + str(float(componentList[7]) * 1.852) + " km/h"
+            self.direction = "Direction: " + componentList[8] + " degree"
+            self.northDirection = float(componentList[8]) - 180
+
+            self.infoList = [self.date, self.speed, self.direction, self.northDirection]
+
+        else:
+            self.speed = "Spd: --- km/h"
+            self.direction = "Direction: --- degree"
+
+            self.infoList = [self.date, self.speed, self.direction]
+
+        self.loop = len(self.infoList)
+
+        return
 
     def debugPrint(self):
-        print(self.speed)
-        print(self.direction)
-        print("northDirection: ", self.northDirection)
-        print(self.date)
+
+        for i in range(self.loop):
+            print("RMC[" , i , "]: ", self.infoList[i])
+
         print("")
 
 
 class GSVData(Data):
-
-
-
-
 
     def __init__ (self, componentList, direction):
 
@@ -124,6 +188,7 @@ class GSVData(Data):
 
                 self.satelliteNo = componentList[4 + arrayPosition]
                 self.satelliteCoordX, self.satelliteCoordY = self.calculation(direction)
+                self.satelliteViewColor = self.setSatelliteViewColor(int(componentList[7 + arrayPosition]))
                 self.satelliteVisible = "true"
                 self.satelliteExplanation = "#" + '%04d' % int(componentList[4 + arrayPosition]) + ":" + componentList[7 + arrayPosition] + "dB"
 
@@ -132,6 +197,7 @@ class GSVData(Data):
                 self.satelliteNum = ""
                 self.satelliteCoordX = 180
                 self.satelliteCoordY = 180
+                self.satelliteViewColor = "black"
                 self.satelliteVisible = "false"
                 self.satelliteExplanation = ""
 
@@ -139,11 +205,11 @@ class GSVData(Data):
             self.satelliteViewName = "satelliteView" + str(self.countGSV)
             self.satelliteViewTextName = "satelliteExplanationText" + str(self.countGSV)
 
-            self.infoList += [self.satelliteNo, self.satelliteCoordX, self.satelliteCoordY, self.satelliteVisible, self.satelliteExplanation]
-            self.objectNameList += [self.satelliteNoName, self.satelliteViewName, self.satelliteViewName, self.satelliteViewName, self.satelliteViewTextName]
-            self.propertyList += ["text", "x", "y", "visible", "text"]
+            self.infoList += [self.satelliteNo, self.satelliteCoordX, self.satelliteCoordY, self.satelliteViewColor, self.satelliteVisible, self.satelliteExplanation]
+            self.objectNameList += [self.satelliteNoName, self.satelliteViewName, self.satelliteViewName, self.satelliteViewName, self.satelliteViewName, self.satelliteViewTextName]
+            self.propertyList += ["text", "x", "y", "color", "visible", "text"]
 
-            self.debugPrintPartial()
+            #self.debugPrintPartial()
 
         self.loop = len(self.infoList)
 
@@ -156,11 +222,24 @@ class GSVData(Data):
         satelliteCoordX = 180 + (math.sin(math.radians(self.satelliteDirection - directionNum))) * length
         satelliteCoordY = 180 + (math.cos(math.radians(self.satelliteDirection - directionNum))) * length
 
-        print("length: ", length)
         return satelliteCoordX, satelliteCoordY
+
+    def setSatelliteViewColor(self, CNoise):
+
+        if CNoise >= 40:
+            return "brown"
+
+        elif (CNoise >= 20) & (CNoise < 40):
+            return "black"
+
+        else:
+            return "grey"
+
+
 
 
     def debugPrintPartial(self):
+
         print("totalSatelliteNum: ", self.totalSatelliteNum)
         print("countGSV: ", self.countGSV)
         print(self.satelliteNoName, " : ", self.satelliteNo)
