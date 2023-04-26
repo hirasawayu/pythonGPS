@@ -18,6 +18,8 @@ def main():
 
     app = QGuiApplication()
 
+    print("aaa")
+
     engine = QQmlApplicationEngine()
     engine.load("mainWindow.qml")
     if not engine.rootObjects():

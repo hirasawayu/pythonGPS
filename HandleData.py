@@ -1,10 +1,10 @@
 # This Python file uses the following encoding: utf-8
-from pyproj import Transformer
-import math
 
 import Data
 
 class HandleData:
+
+    directionNum = 0
 
     def __init__(self):
 
@@ -12,16 +12,17 @@ class HandleData:
 
     def extractData(self, linePointer):
 
-        file = open('NMEA.txt', 'r')
+        file = open('NMEALong.txt', 'r')
         extractedData = ""
 
         for i in range(linePointer):
             file.readline()
 
         while True:
+
             line = file.readline()
 
-            if line == "\n":
+            if line == ("\n"):
                 linePointer += 1
                 loopFlag = True
                 break
@@ -34,6 +35,10 @@ class HandleData:
 
             extractedData += line
 
+            if "#GPVTG" in line:
+                loopFlag = True
+                break
+
         file.close()
 
         return extractedData, linePointer, loopFlag
@@ -41,8 +46,14 @@ class HandleData:
 
     def analyzeLineInfo(self, line):
 
-        #result = self.checkSum(line)
+        result = self.checkSum(line)
 
+        if result == False:
+            print("CheckSum Does Not Match or Space")
+            return 0
+
+        #チェックサム部分を切り取り
+        line = line[:-3]
 
         if "$GPGGA" in line:
             componentList = line.split(',')
@@ -59,10 +70,8 @@ class HandleData:
         #[11]:geoidHeight
 
 
-            lat_degree, lon_degree = self.degminToDegree(componentList[2], componentList[4])
-            coordX, coordY = self.latlonToXY(lat_degree, componentList[3], lon_degree, componentList[5])
 
-            GGAInfo = Data.GGAData(componentList, lat_degree, lon_degree, coordX, coordY)
+            GGAInfo = Data.GGAData(componentList)
             GGAInfo.debugPrint()
 
             return GGAInfo
@@ -77,7 +86,8 @@ class HandleData:
 
             RMCInfo = Data.RMCData(componentList)
             RMCInfo.debugPrint()
-            self.directionNum = float(componentList[8])
+            if (componentList[2] == "A"):
+                self.directionNum = float(componentList[8])
 
             return RMCInfo
 
@@ -93,87 +103,40 @@ class HandleData:
             #[6 + 4n]:satelliteDirection
             #[7 + 4n]:satelliteCNoise
 
-
-
-
-
             GSVInfo = Data.GSVData(componentList, self.directionNum)
             #GSVInfo.debugPrintAll()
 
             return GSVInfo
-
-
-
 
         else:
 
             return 0
 
 
-    #緯度経度の単位を度分から度に変換
-    def degminToDegree(self, latitude, longtitude):
-        #緯度
-        lat_degmin = float(latitude)
-        lat_int = int(lat_degmin/100)
-        lat_float = ( lat_degmin - (lat_int * 100) ) /60
-        lat_degree = lat_int + lat_float
 
-        #経度
-        lon_degmin = float(longtitude)
-        lon_int = int(lat_degmin/100)
-        lon_float = ( lon_degmin - (lat_int * 100) ) /60
-        lon_degree = lon_int + lon_float
-
-        return lat_degree, lon_degree
-
-
-    #緯度経度からXY座標を求める
-    def latlonToXY(self, lat_degree, latDirection, lon_degree, lonDirection):
-
-        transformer = Transformer.from_crs("EPSG:6668", "EPSG:6680")
-        y_tmp, x_tmp = transformer.transform(lat_degree, lon_degree)
-
-        #North:+, South:-
-        if latDirection == 'N':
-            y = y_tmp
-
-        elif latDirection == 'S':
-            y = -(y_tmp)
-
-        else:
-            print("NO DATA")
-
-
-        #East:+, West:-
-        if lonDirection == 'E':
-            x = x_tmp
-
-        elif lonDirection == 'W':
-            x = -(x_tmp)
-
-        else:
-            print("NO DATA")
-
-        return x, y
 
 
 
     def checkSum(self, line):
 
+        self.count = 0
+        sum = line[-2:]
+
         checkLine = line[1:-3]
-        print(checkLine)
+        checkLine = bytes(checkLine, encoding= "utf-8")
+
+        for i in range(len(checkLine)):
+            self.count ^= checkLine[i]
+
+        self.count = ("%X" % self.count)
+
+        if self.count == sum:
+            return True
+
+        else:
+            return False
 
 
-
-
-
-
-
-       #for i in range(len(str)):
-        #   byte = str[pointer].encode
-         #  byte = bytearray(byte)
-          # print(byte)
-           #pointer += 1
 
 
 
