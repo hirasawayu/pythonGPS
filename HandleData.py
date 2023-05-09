@@ -64,13 +64,11 @@ class HandleData:
             line = serial.readLine()
 
             line = str(line, "utf-8")
+            line.rstrip()
 
             extractedData += line
 
-            print(line)
-
             if "GPGLL" in line:
-                print("Stop")
                 break
 
             if (line == 0 & serial.waitForReadyRead() == False):
@@ -80,7 +78,17 @@ class HandleData:
 
         print(extractedData)
 
+        self.writeLog(extractedData)
+
         return extractedData, 0, loopFlag
+
+
+    def writeLog(self, extractedData):
+
+        file = open("NMEALog.txt", "a")
+        file.write(extractedData)
+        file.close()
+
 
 
     def analyzeLineInfo(self, line):
