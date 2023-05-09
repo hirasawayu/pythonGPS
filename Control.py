@@ -25,7 +25,7 @@ class Control:
     def startControl(self):
 
         handleData = HandleData.HandleData()
-        extractedData, self.linePointer, loopFlag = handleData.extractData(self.linePointer)
+        extractedData, self.linePointer, loopFlag = handleData.extractDataFromSerial(self.linePointer)
         if loopFlag == False:
 
             self.timer.stop()

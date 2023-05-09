@@ -1,4 +1,6 @@
 # This Python file uses the following encoding: utf-8
+from PySide6.QtSerialPort import QSerialPort, QSerialPortInfo
+from PySide6.QtCore import QIODevice
 
 import Data
 
@@ -43,6 +45,42 @@ class HandleData:
         file.close()
 
         return extractedData, linePointer, loopFlag
+
+    def extractDataFromSerial(self, linePointer):
+
+        extractedData = ""
+        serial = QSerialPort()
+
+        serial.setPortName("COM4")
+        serial.setBaudRate(115200)
+        serial.setDataBits(QSerialPort.Data8)
+        serial.setParity(QSerialPort.NoParity)
+        serial.setStopBits(QSerialPort.OneStop)
+        serial.setFlowControl(QSerialPort.NoFlowControl)
+        check = serial.open(QIODevice.ReadOnly)
+        print("Is Port Open: ", check)
+
+        while(1):
+            line = serial.readline()
+
+            line = str(line, "uft-8")
+
+            extractedData += line
+
+            print(line)
+
+            if "GPGLL" in line:
+                print("Stop")
+                break
+
+            if (line == 0 & serial.waitForReadyRead() == False):
+                break
+
+        loopFlag = True
+
+        print(extractedData)
+
+        return extractedData, 0, loopFlag
 
 
     def analyzeLineInfo(self, line):
