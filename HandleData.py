@@ -61,9 +61,9 @@ class HandleData:
         print("Is Port Open: ", check)
 
         while(1):
-            line = serial.readline()
+            line = serial.readLine()
 
-            line = str(line, "uft-8")
+            line = str(line, "utf-8")
 
             extractedData += line
 
