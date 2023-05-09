@@ -4,36 +4,43 @@ import math
 
 class Data:
 
-    """
     #GGA
-    time = ""
-    latitude = ""
-    longtitude = 0
+    time = "--:--:--"
+    latitude = "Lat: ---"
+    longtitude = "Lon: ---"
     #使用衛星数
-    usingSatelliteNum = 0
+    usingSatelliteNum = "Number of Using Satellites: ---"
     #海抜
-    altitude = 0
+    altitude = "Alt: ---"
     #ジオイド高
-    geoidHeight = 0
+    geoidHeight = "Geiod Height: ---"
     #X座標
-    coordX = 0
+    coordX = "Coord X: ---"
     #Y座標
-    coordY = 0
+    coordY = "Coord Y: ---"
     #位置特定品質
-    locationQuality = 0
+    locationQuality = "LocationQuality: ---"
 
     #RMC
-    speed = 0
-    direction = 0
-    date = ""
-    """
+    speed = "Spd: ---"
+    direction = "Direction: ---"
+    date = "--/--/--"
+    northDirection = 0
 
+    #GSV
+    satelliteNum = ""
+    satelliteCoordX = 180
+    satelliteCoordY = 180
+    satelliteViewColor = "grey"
+    satelliteVisible = "false"
+    satelliteExplanation = ""
 
     def __init__(self):
         pass
 
     def debugPrint(self):
         pass
+
 
 class GGAData (Data):
 
@@ -54,6 +61,7 @@ class GGAData (Data):
             lat_degree, lon_degree = self.degminToDegree(componentList[2], componentList[4])
             coordX, coordY = self.latlonToXY(lat_degree, componentList[3], lon_degree, componentList[5])
 
+            latCenter, lonCenter = self.findCenter(componentList[2], componentList[4])
             self.latitude = "Lat: " + componentList[3] + "  " + componentList[2][:-7] + "." + componentList[2][-7:-5] + "'" + componentList[2][-4:-2] + "." + componentList[2][-2:] + "\""
             self.longtitude = "Lon: " + componentList[5] + "  " + componentList[4][:-7] + "." + componentList[4][-7:-5] + "'" + componentList[4][-4:-2] + "." + componentList[4][-2:] + "\""
             self.altitude = "Alt: " + componentList[9] + " m"
@@ -62,6 +70,7 @@ class GGAData (Data):
             self.coordY = "Coord Y: " + str(coordY)
 
         #無効データの場合
+        """
         else:
             self.latitude = "Lat: ---"
             self.longtitude = "Lon: ---"
@@ -70,10 +79,20 @@ class GGAData (Data):
             self.coordX = "Coord X: ---"
             self.coordY = "Coord Y: ---"
 
+        """
+
         self.infoList = [self.time, self.locationQuality, self.usingSatelliteNum, self.circleColor, self.latitude, self.longtitude, self.altitude, self.geoidHeight, self.coordX, self.coordY]
         self.loop = len(self.infoList)
 
         return
+
+    #緯度経度の小数点の位置を求める
+    def findCenter(self, latitude, longtitude):
+        latCenter = latitude.find(".")
+        lonCenter = longtitude.find(".")
+
+        return latCenter, lonCenter
+
 
     #緯度経度の単位を度分から度に変換
     def degminToDegree(self, latitude, longtitude):
@@ -141,18 +160,21 @@ class RMCData(Data):
         if componentList[2] == "A":
 
             self.speed = "Spd: " + '{:.2f}'.format(float(componentList[7]) * 1.852) + " km/h"
-            self.direction = "Direction: " + componentList[8] + " degree"
-            self.northDirection = float(componentList[8]) - 180
+            if componentList[8] != "":
+                self.direction = "Direction: " + componentList[8] + " degree"
+                self.northDirection = float(componentList[8]) - 180
 
             self.infoList = [self.date, self.speed, self.direction, self.northDirection]
 
+
         else:
-            self.speed = "Spd: --- km/h"
-            self.direction = "Direction: --- degree"
+            #self.speed = "Spd: --- km/h"
+            #self.direction = "Direction: --- degree"
 
             self.infoList = [self.date, self.speed, self.direction]
 
         self.loop = len(self.infoList)
+
 
         return
 
@@ -192,7 +214,8 @@ class GSVData(Data):
 
                 self.satelliteNo = componentList[4 + arrayPosition]
                 self.satelliteCoordX, self.satelliteCoordY = self.calculation(direction)
-                self.satelliteViewColor = self.setSatelliteViewColor(int(componentList[7 + arrayPosition]))
+                if componentList[7 + arrayPosition] != "":
+                    self.satelliteViewColor = self.setSatelliteViewColor(int(componentList[7 + arrayPosition]))
                 self.satelliteVisible = "true"
                 self.satelliteExplanation = "#" + '%04d' % int(componentList[4 + arrayPosition]) + ":" + componentList[7 + arrayPosition] + "dB"
 
@@ -201,7 +224,7 @@ class GSVData(Data):
                 self.satelliteNum = ""
                 self.satelliteCoordX = 180
                 self.satelliteCoordY = 180
-                self.satelliteViewColor = "black"
+                self.satelliteViewColor = "grey"
                 self.satelliteVisible = "false"
                 self.satelliteExplanation = ""
 

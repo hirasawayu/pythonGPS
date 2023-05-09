@@ -1,5 +1,5 @@
 # This Python file uses the following encoding: utf-8
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, QThread
 from PySide6.QtCore import QTimer
 
 import HandleData
@@ -16,8 +16,13 @@ class Control:
 
         #タイマーセット
         self.timer = QTimer()
-        self.timer.setInterval(10)
+        self.timer.setInterval(100)
         self.timer.timeout.connect(self.startControl)
+
+        #非同期スレッド作成
+        #self.thread = QThread()
+        #self.timer.moveToThread(self.thread)
+        #self.thread.start()
         self.timer.start()
 
         pass
@@ -35,6 +40,8 @@ class Control:
 
         i = 0
         for i in range(len(extractedDataList)):
+
+
             print(extractedDataList[i])
             info = handleData.analyzeLineInfo(extractedDataList[i])
 

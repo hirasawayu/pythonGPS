@@ -64,7 +64,6 @@ class HandleData:
             line = serial.readLine()
 
             line = str(line, "utf-8")
-            line.rstrip()
 
             extractedData += line
 
@@ -93,7 +92,11 @@ class HandleData:
 
     def analyzeLineInfo(self, line):
 
+        line = line.replace("\r", "")
+
         result = self.checkSum(line)
+
+        print(line)
 
         if result == False:
             print("CheckSum Does Not Match or Space")
@@ -134,7 +137,7 @@ class HandleData:
             RMCInfo = Data.RMCData(componentList)
             #RMCInfo.debugPrint()
 
-            if (componentList[2] == "A"):
+            if (componentList[8] != ""):
                 self.direction = float(componentList[8])
                 self.directionValidFlag = True
 
@@ -152,9 +155,6 @@ class HandleData:
             #[5 + 4n]:satelliteElevationAngle
             #[6 + 4n]:satelliteDirection
             #[7 + 4n]:satelliteCNoise
-
-            if self.directionValidFlag == False:
-                return 0
 
 
             GSVInfo = Data.GSVData(componentList, self.direction)
