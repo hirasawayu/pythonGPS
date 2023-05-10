@@ -68,7 +68,7 @@ Rectangle {
         anchors.leftMargin: 0
         width: 250
         height: 40
-        Text: "a"
+        text: ""
     }
 
     Text {
@@ -100,8 +100,9 @@ Rectangle {
         anchors.leftMargin: 0
         width: 250
         height: 40
-        Text: "a"
+        text: ""
     }
+    
 
     Text {
         id: speedText
