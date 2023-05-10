@@ -137,6 +137,7 @@ class HandleData:
             RMCInfo = Data.RMCData(componentList)
             #RMCInfo.debugPrint()
 
+            #有効な真方位の値を取得
             if (componentList[8] != ""):
                 self.direction = float(componentList[8])
                 self.directionValidFlag = True
@@ -159,6 +160,11 @@ class HandleData:
 
             GSVInfo = Data.GSVData(componentList, self.direction)
             #GSVInfo.debugPrintAll()
+
+            #16以上の衛星を観測した場合
+            if GSVInfo.countGSV > 16:
+                print("Total satellites are more than 16.")
+                return 0
 
             return GSVInfo
 
