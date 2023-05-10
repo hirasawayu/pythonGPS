@@ -209,15 +209,12 @@ class GSVData(Data):
             if self.countGSV <= self.totalSatelliteNum:
 
                 arrayPosition = (((self.countGSV - 1) % 4) * 4)
+
+                #フェイルセーフ
+                componentList = self.failSafe(componentList, arrayPosition)
+
                 self.satelliteElevationAngle = int(componentList[5 + arrayPosition])
                 self.satelliteDirection = int(componentList[6 + arrayPosition]) - float(direction)
-
-                if componentList[7 + arrayPosition] != "":
-                    componentList[7 + arrayPosition] = int(componentList[7 + arrayPosition])
-
-                else:
-                    componentList[7 + arrayPosition] = "---"
-
                 self.satelliteNo = componentList[4 + arrayPosition]
                 self.satelliteCoordX, self.satelliteCoordY = self.calculation(direction)
                 self.satelliteViewColor = self.setSatelliteViewColor(componentList[7 + arrayPosition])
@@ -255,6 +252,16 @@ class GSVData(Data):
             self.objectNameList += ["satelliteView" + str(i), "satelliteExplanationText" + str(i)]
             self.propertyList += ["visible", "text"]
 
+
+    def failSafe(self, componentList, arrayPosition):
+
+        if componentList[7 + arrayPosition] != "":
+            componentList[7 + arrayPosition] = int(componentList[7 + arrayPosition])
+
+        else:
+            componentList[7 + arrayPosition] = "---"
+
+        return componentList
 
     def calculation(self, directionNum):
 

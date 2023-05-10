@@ -1,8 +1,8 @@
 import QtQuick 2.15
-import QtQuick.Window 2.15
+//import QtQuick.Window 2.15
 
-Window {
-//Rectangle {
+//Window {
+Rectangle {
     id: window
     width: 900
     height: 600
@@ -43,7 +43,7 @@ Window {
         id: latText
         objectName: "latText"
         color: "white"
-        width: 400
+        width: 100
         height: 40
         text: qsTr("Lat: ---")
         anchors.left: timeText.left
@@ -56,10 +56,23 @@ Window {
     }
 
     Text {
+        id: latDegreeText
+        objectName: "latDegreeText"
+        color: "white"
+        anchors.left: latText.right
+        anchors.top: latText.top
+        anchors.topMargin: 0
+        anchors.leftMargin: 0
+        width: 250
+        height: 40
+        Text: ""
+    }
+
+    Text {
         id: lonText
         objectName: "lonText"
         color: "white"
-        width: 400
+        width: 100
         height: 40
         text: qsTr("Lon: ---")
         anchors.left: latText.left
