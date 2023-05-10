@@ -6,7 +6,7 @@ class Data:
 
     #GGA
     time = "--:--:--"
-    latitude = "Lat: ---"
+    latitude = "Lat : ---"
     longtitude = "Lon: ---"
     #使用衛星数
     usingSatelliteNum = "Number of Using Satellites: ---"
@@ -63,24 +63,12 @@ class GGAData (Data):
 
             latCenter, lonCenter = self.findCenter(componentList[2], componentList[4])
             print("latCenter: ", latCenter, " lonCenter: ", lonCenter)
-            self.latitude = "Lat: " + componentList[3] + "  " + componentList[2][:(latCenter-2)] + "." + componentList[2][(latCenter-2):latCenter] + "'" + componentList[2][(latCenter+1):(latCenter+3)] + "." + componentList[2][(latCenter+3)] + "\""
+            self.latitude = "Lat : " + componentList[3] + "  " + componentList[2][:(latCenter-2)] + "." + componentList[2][(latCenter-2):latCenter] + "'" + componentList[2][(latCenter+1):(latCenter+3)] + "." + componentList[2][(latCenter+3)] + "\""
             self.longtitude = "Lon: " + componentList[5] + "  " + componentList[4][:(lonCenter-2)] + "." + componentList[4][(lonCenter-2):lonCenter] + "'" + componentList[4][(lonCenter+1):(lonCenter+3)] + "." + componentList[4][(lonCenter+3)] + "\""
             self.altitude = "Alt: " + componentList[9] + " m"
             self.geoidHeight = "Geoid Height: " + componentList[11] + " m"
             self.coordX = "Coord X: " + str(coordX)
             self.coordY = "Coord Y: " + str(coordY)
-
-        #無効データの場合
-        """
-        else:
-            self.latitude = "Lat: ---"
-            self.longtitude = "Lon: ---"
-            self.altitude = "Alt : ---"
-            self.geoidHeight = "Geiod Height: ---"
-            self.coordX = "Coord X: ---"
-            self.coordY = "Coord Y: ---"
-
-        """
 
         self.infoList = [self.time, self.locationQuality, self.usingSatelliteNum, self.circleColor, self.latitude, self.longtitude, self.altitude, self.geoidHeight, self.coordX, self.coordY]
         self.loop = len(self.infoList)
@@ -169,8 +157,6 @@ class RMCData(Data):
 
 
         else:
-            #self.speed = "Spd: --- km/h"
-            #self.direction = "Direction: --- degree"
 
             self.infoList = [self.date, self.speed, self.direction]
 
@@ -206,23 +192,25 @@ class GSVData(Data):
 
             self.countGSV += 1
 
-            if self.countGSV <= self.totalSatelliteNum:
+            if self.countGSV > self.totalSatelliteNum:
+                break;
 
-                arrayPosition = (((self.countGSV - 1) % 4) * 4)
+            arrayPosition = (((self.countGSV - 1) % 4) * 4)
 
-                #フェイルセーフ
-                componentList = self.failSafe(componentList, arrayPosition)
+            #フェイルセーフ
+            componentList = self.failSafe(componentList, arrayPosition)
 
-                self.satelliteElevationAngle = int(componentList[5 + arrayPosition])
-                self.satelliteDirection = int(componentList[6 + arrayPosition]) - float(direction)
-                self.satelliteNo = componentList[4 + arrayPosition]
-                self.satelliteCoordX, self.satelliteCoordY = self.calculation(direction)
-                self.satelliteViewColor = self.setSatelliteViewColor(componentList[7 + arrayPosition])
-                self.satelliteVisible = "true"
+            self.satelliteElevationAngle = int(componentList[5 + arrayPosition])
+            self.satelliteDirection = int(componentList[6 + arrayPosition]) - float(direction)
+            self.satelliteNo = componentList[4 + arrayPosition]
+            self.satelliteCoordX, self.satelliteCoordY = self.calculation(direction)
+            self.satelliteViewColor = self.setSatelliteViewColor(componentList[7 + arrayPosition])
+            self.satelliteVisible = "true"
 
-                self.satelliteExplanation = "#" + '%03d' % int(componentList[4 + arrayPosition]) + ":" + str(componentList[7 + arrayPosition]) + "dB"
+            self.satelliteExplanation = "#" + '%03d' % int(componentList[4 + arrayPosition]) + ":" + str(componentList[7 + arrayPosition]) + "dB"
 
             #データが無い場合は初期化
+            """
             else:
                 self.satelliteNum = ""
                 self.satelliteCoordX = 180
@@ -230,6 +218,7 @@ class GSVData(Data):
                 self.satelliteViewColor = "grey"
                 self.satelliteVisible = "false"
                 self.satelliteExplanation = ""
+            """
 
             self.satelliteNoName = "satelliteViewText" + str(self.countGSV)
             self.satelliteViewName = "satelliteView" + str(self.countGSV)
@@ -255,11 +244,15 @@ class GSVData(Data):
 
     def failSafe(self, componentList, arrayPosition):
 
-        if componentList[7 + arrayPosition] != "":
-            componentList[7 + arrayPosition] = int(componentList[7 + arrayPosition])
+        failSafeTarget = [5 + arrayPosition, 6 + arrayPosition, 7 + arrayPosition]
+        failSafeTargetNum = len(failSafeTarget)
 
-        else:
-            componentList[7 + arrayPosition] = "---"
+        for i in range(failSafeTargetNum):
+
+            if componentList[failSafeTarget[i]] != "":
+                componentList[failSafeTarget[i]] = int(componentList[failSafeTarget[i]])
+            else:
+                componentList[failSafeTarget[i]] = "---"
 
         return componentList
 
@@ -285,9 +278,6 @@ class GSVData(Data):
 
         else:
             return "grey"
-
-
-
 
     def debugPrintPartial(self):
 

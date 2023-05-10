@@ -6,14 +6,16 @@ import Data
 
 class HandleData:
 
+    isSerialAvailable = False
     direction = 0
     directionValidFlag = False
+    loopFlag = False
 
     def __init__(self):
 
         pass
 
-    def extractData(self, linePointer):
+    def extractDataFromLog(self, linePointer):
 
         file = open('NMEA.txt', 'r')
         extractedData = ""
@@ -27,11 +29,11 @@ class HandleData:
 
             if line == ("\n"):
                 linePointer += 1
-                loopFlag = True
+                self.loopFlag = True
                 break
 
             elif not line:
-                loopFlag = False
+                self.loopFlag = False
                 break
 
             linePointer += 1
@@ -39,14 +41,14 @@ class HandleData:
             extractedData += line
 
             if "#GPVTG" in line:
-                loopFlag = True
+                self.loopFlag = True
                 break
 
         file.close()
 
-        return extractedData, linePointer, loopFlag
+        return extractedData, linePointer
 
-    def extractDataFromSerial(self, linePointer):
+    def extractDataFromSerial(self):
 
         extractedData = ""
         serial = QSerialPort()
@@ -57,8 +59,11 @@ class HandleData:
         serial.setParity(QSerialPort.NoParity)
         serial.setStopBits(QSerialPort.OneStop)
         serial.setFlowControl(QSerialPort.NoFlowControl)
-        check = serial.open(QIODevice.ReadOnly)
-        print("Is Port Open: ", check)
+        self.isSerialAvailable = serial.open(QIODevice.ReadOnly)
+        print("Is Port Open: ", self.isSerialAvailable)
+
+        if self.isSerialAvailable == False:
+            return extractedData
 
         while(1):
             line = serial.readLine()
@@ -73,13 +78,13 @@ class HandleData:
             if (line == 0 & serial.waitForReadyRead() == False):
                 break
 
-        loopFlag = True
+        self.loopFlag = True
 
         print(extractedData)
 
         self.writeLog(extractedData)
 
-        return extractedData, 0, loopFlag
+        return extractedData
 
 
     def writeLog(self, extractedData):

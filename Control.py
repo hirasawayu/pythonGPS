@@ -16,7 +16,7 @@ class Control:
 
         #タイマーセット
         self.timer = QTimer()
-        self.timer.setInterval(100)
+        self.timer.setInterval(1000)
         self.timer.timeout.connect(self.startControl)
 
         #非同期スレッド作成
@@ -30,8 +30,15 @@ class Control:
     def startControl(self):
 
         handleData = HandleData.HandleData()
-        extractedData, self.linePointer, loopFlag = handleData.extractDataFromSerial(self.linePointer)
-        if loopFlag == False:
+
+        #シリアル通信から取得
+        extractedData = handleData.extractDataFromSerial()
+
+        #シリアル通信不可時はログファイルから取得
+        if handleData.isSerialAvailable == False:
+            extractedData, self.linePointer = handleData.extractDataFromLog(self.linePointer)
+
+        if handleData.loopFlag == False:
 
             self.timer.stop()
             return

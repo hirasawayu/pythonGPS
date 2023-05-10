@@ -1,8 +1,8 @@
 import QtQuick 2.15
-//import QtQuick.Window 2.15
+import QtQuick.Window 2.15
 
-//Window {
-Rectangle {
+Window {
+//Rectangle {
     id: window
     width: 900
     height: 600
@@ -68,7 +68,7 @@ Rectangle {
         anchors.leftMargin: 0
         width: 250
         height: 40
-        Text: "a"
+        text: ""
     }
 
     Text {
@@ -100,7 +100,7 @@ Rectangle {
         anchors.leftMargin: 0
         width: 250
         height: 40
-        Text: "a"
+        text: ""
     }
 
     Text {
