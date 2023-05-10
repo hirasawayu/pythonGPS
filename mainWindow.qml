@@ -604,6 +604,56 @@ Window {
                 verticalAlignment: Text.AlignVCenter
             }
         }
+
+        Rectangle {
+            id: satelliteView15
+            objectName: "satelliteView15"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText15
+                objectName:"satelliteViewText15"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Rectangle {
+            id: satelliteView16
+            objectName: "satelliteView16"
+            x: 180
+            y: 180
+            visible: false
+            width: 40
+            height: 40
+            color: "black"
+            border.color: "white"
+            border.width: 2
+            radius: width / 2
+
+            Text {
+                id: satelliteViewText16
+                objectName:"satelliteViewText16"
+                color: "white"
+                text: qsTr("")
+                anchors.fill: parent
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
     }
 
     Text {
@@ -641,12 +691,12 @@ Window {
     Rectangle {
         id: showGSVArea
         width: 400
-        height: 220
+        height: 250
         color: "black"
         anchors.left: dateText.left
         anchors.top: parent.top
         anchors.leftMargin: 0
-        anchors.topMargin: 360
+        anchors.topMargin: 340
 
         Text {
             id: satelliteExplanationText1
@@ -763,12 +813,12 @@ Window {
             width: 150
             height: 30
             text: qsTr("")
-            anchors.left: satelliteExplanationText1.right
-            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.top: satelliteExplanationText7.bottom
             font.pixelSize: 22
             verticalAlignment: Text.AlignVCenter
             color: "white"
-            anchors.leftMargin: 50
+            anchors.leftMargin: 0
             anchors.topMargin: 0
         }
 
@@ -778,12 +828,12 @@ Window {
             width: 150
             height: 30
             text: qsTr("")
-            anchors.left: satelliteExplanationText8.left
-            anchors.top: satelliteExplanationText8.bottom
+            anchors.left: satelliteExplanationText1.right
+            anchors.top: parent.top
             font.pixelSize: 22
             verticalAlignment: Text.AlignVCenter
             color: "white"
-            anchors.leftMargin: 0
+            anchors.leftMargin: 40
             anchors.topMargin: 0
         }
 
@@ -793,7 +843,7 @@ Window {
             width: 150
             height: 30
             text: qsTr("")
-            anchors.left: satelliteExplanationText8.left
+            anchors.left: satelliteExplanationText9.left
             anchors.top: satelliteExplanationText9.bottom
             font.pixelSize: 22
             verticalAlignment: Text.AlignVCenter
@@ -808,7 +858,7 @@ Window {
             width: 150
             height: 30
             text: qsTr("")
-            anchors.left: satelliteExplanationText8.left
+            anchors.left: satelliteExplanationText9.left
             anchors.top: satelliteExplanationText10.bottom
             font.pixelSize: 22
             verticalAlignment: Text.AlignVCenter
@@ -823,7 +873,7 @@ Window {
             width: 150
             height: 30
             text: qsTr("")
-            anchors.left: satelliteExplanationText8.left
+            anchors.left: satelliteExplanationText9.left
             anchors.top: satelliteExplanationText11.bottom
             font.pixelSize: 22
             verticalAlignment: Text.AlignVCenter
@@ -838,7 +888,7 @@ Window {
             width: 150
             height: 30
             text: qsTr("")
-            anchors.left: satelliteExplanationText8.left
+            anchors.left: satelliteExplanationText9.left
             anchors.top: satelliteExplanationText12.bottom
             font.pixelSize: 22
             verticalAlignment: Text.AlignVCenter
@@ -853,8 +903,38 @@ Window {
             width: 150
             height: 30
             text: qsTr("")
-            anchors.left: satelliteExplanationText8.left
+            anchors.left: satelliteExplanationText9.left
             anchors.top: satelliteExplanationText13.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText15
+            objectName: "satelliteExplanationText15"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText9.left
+            anchors.top: satelliteExplanationText14.bottom
+            font.pixelSize: 22
+            verticalAlignment: Text.AlignVCenter
+            color: "white"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+        }
+
+        Text {
+            id: satelliteExplanationText16
+            objectName: "satelliteExplanationText16"
+            width: 150
+            height: 30
+            text: qsTr("")
+            anchors.left: satelliteExplanationText9.left
+            anchors.top: satelliteExplanationText15.bottom
             font.pixelSize: 22
             verticalAlignment: Text.AlignVCenter
             color: "white"
